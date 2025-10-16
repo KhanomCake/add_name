@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Name Manager</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>รายชื่อผู้ใช้งาน</h1>
+
+  <div class="form">
+    <input type="text" id="nameInput" placeholder="กรอกชื่อใหม่..." />
+    <button id="addBtn">เพิ่ม</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>ชื่อ</th>
+        <th>การจัดการ</th>
+      </tr>
+    </thead>
+    <tbody id="nameList"></tbody>
+  </table>
+
+  <script src="script.js"></script>
+</body>
+</html>
