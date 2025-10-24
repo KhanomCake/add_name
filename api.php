@@ -1,66 +1,38 @@
 <?php
-// เชื่อมต่อฐานข้อมูล
-$conn = new mysqli("localhost", "root", "", "name_manager");
+header("Content-Type: application/json");
+$conn = new mysqli("localhost", "root", "", "myapp_db");
 
-// ตรวจสอบการเชื่อมต่อ
 if ($conn->connect_error) {
-  die(json_encode(["error" => "เชื่อมต่อฐานข้อมูลไม่สำเร็จ: " . $conn->connect_error]));
+  die(json_encode(["error" => "เชื่อมต่อฐานข้อมูลไม่ได้"]));
 }
 
-// อ่าน action จาก URL
 $action = $_GET['action'] ?? '';
 
-// อ่านข้อมูลทั้งหมด
-if ($action === 'read') {
-  $result = $conn->query("SELECT * FROM names");
-  $data = [];
-
-  // ดึงข้อมูลออกมาแบบมีชื่อคีย์ชัดเจน (id, name)
-  while ($row = $result->fetch_assoc()) {
-    $data[] = $row;
-  }
-
-  echo json_encode($data);
-  exit;
+if ($action == 'read') {
+  $result = $conn->query("SELECT * FROM users");
+  echo json_encode($result->fetch_all(MYSQLI_ASSOC));
 }
 
-// เพิ่มข้อมูลใหม่
-if ($action === 'add') {
+if ($action == 'add') {
   $name = $_POST['name'] ?? '';
-
-  if ($name !== '') {
-    $stmt = $conn->prepare("INSERT INTO names (name) VALUES (?)");
-    $stmt->bind_param("s", $name);
-    $stmt->execute();
-    echo json_encode(["status" => "ok"]);
-  } else {
-    echo json_encode(["status" => "error", "message" => "ไม่มีชื่อ"]);
-  }
-  exit;
-}
-
-// ลบข้อมูล
-if ($action === 'delete') {
-  $id = $_GET['id'] ?? 0;
-
-  $stmt = $conn->prepare("DELETE FROM names WHERE id = ?");
-  $stmt->bind_param("i", $id);
-  $stmt->execute();
-
+  $email = $_POST['email'] ?? '';
+  $conn->query("INSERT INTO users (name, email) VALUES ('$name', '$email')");
   echo json_encode(["status" => "ok"]);
-  exit;
 }
 
-// แก้ไขข้อมูล
-if ($action === 'update') {
+
+if ($action == 'delete') {
+  $id = $_GET['id'] ?? 0;
+  $conn->query("DELETE FROM users WHERE id=$id");
+  echo json_encode(["status" => "deleted"]);
+}
+
+if ($action == 'update') {
   $id = $_POST['id'] ?? 0;
   $name = $_POST['name'] ?? '';
-
-  $stmt = $conn->prepare("UPDATE names SET name = ? WHERE id = ?");
-  $stmt->bind_param("si", $name, $id);
-  $stmt->execute();
-
-  echo json_encode(["status" => "ok"]);
-  exit;
+  $conn->query("UPDATE users SET name='$name' WHERE id=$id");
+  echo json_encode(["status" => "updated"]);
 }
+
+$conn->close();
 ?>

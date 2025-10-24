@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Name Manager</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <h1>รายชื่อผู้ใช้งาน</h1>
@@ -14,7 +14,7 @@
     <button id="addBtn">เพิ่ม</button>
   </div>
 
-  <table>
+  <table style="border: 1px solid black;">
     <thead>
       <tr>
         <th>ID</th>
@@ -22,9 +22,12 @@
         <th>การจัดการ</th>
       </tr>
     </thead>
-    <tbody id="nameList"></tbody>
+    <tbody id="nameList">
+      <!-- รายชื่อจะถูกแสดงที่นี่โดย JS -->
+    </tbody>
   </table>
 
+  <!-- 🔥 จุดสำคัญ: ใส่ script ไว้ล่างสุด -->
   <script src="script.js"></script>
 </body>
 </html>
